@@ -1,59 +1,97 @@
 <?php
+// Veritabanı bağlantısı
+$host = '172.17.0.3';     // PostgreSQL konteynerinin IP adresi
+$db   = 'postgres';        // Veritabanı adı
+$user = 'postgres';        // Kullanıcı adı
+$pass = 'postgres';        // Şifre
+$charset = 'utf8';         // Karakter seti
 
-$host = '172.17.0.3'; // PostgreSQL konteynerinin IP adresi
-$db = 'postgres';  // Veritabanı adı
-$user = 'postgres'; // PostgreSQL kullanıcı adı
-$pass = 'postgres'; // PostgreSQL şifre
-$charset = 'utf8';
-
+// PDO bağlantı cümlesi
 $dsn = "pgsql:host=$host;dbname=$db";
+
 try {
+    // PDO ile veritabanına bağlan
     $pdo = new PDO($dsn, $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Bağlantı başarılı!<br>";
+    
+    // Eğer formdan veri gönderildiyse (POST metodu ile)
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (!empty($_POST["name"]) && !empty($_POST["comment"])) {
+            $name1 = htmlspecialchars($_POST["name"]);
+            $comment = htmlspecialchars($_POST["comment"]);
 
-    // Test sorgusu
-    $stmt = $pdo->query("SELECT NOW()");
-    $now = $stmt->fetchColumn();
-    echo "PostgreSQL zamanı: $now";
+            // Eğer id varsa, bu bir düzenleme işlemi
+            if (isset($_POST['id'])) {
+                $sql = "UPDATE post SET created_by = :created_by, comment = :comment WHERE id = :id";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([
+                    ':created_by' => $name1,
+                    ':comment'    => $comment,
+                    ':id'         => $_POST['id']
+                ]);
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            } else {
+                // Yeni veri ekleme
+                $sql = "INSERT INTO post (created_by, comment) VALUES (:created_by, :comment)";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([
+                    ':created_by' => $name1,
+                    ':comment'    => $comment
+                ]);
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
+        }
+    }
 
-    // Kullanıcıları çek
-    $stmt = $pdo->query("SELECT * FROM post");
+    // Silme işlemi
+    if (isset($_GET['delete'])) {
+        $deleteId = $_GET['delete'];
+        $stmt = $pdo->prepare("DELETE FROM post WHERE id = :id");
+        $stmt->execute([':id' => $deleteId]);
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    }
+
+    // Veritabanındaki tüm verileri çek
+    $stmt = $pdo->query("SELECT * FROM post ORDER BY id DESC");
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo "<br>";
+
+    // Veritabanındaki tüm verileri ekranda listele
+    echo "<h2>Comments</h2>";
     foreach ($users as $user) {
-        echo "ID: {$user['id']} - Name: {$user['created_by']} - Comment: {$user['comment']}<br>";
+        echo "<strong>ID:</strong> {$user['id']}<br>";
+        echo "<strong>Name:</strong> {$user['created_by']}<br>";
+        echo "<strong>Comment:</strong> " . nl2br($user['comment']) . "<br>";
+        echo "<a href=\"?edit={$user['id']}\">Edit</a> | <a href=\"?delete={$user['id']}\">Delete</a><br><hr>";
     }
+
+    // Düzenleme işlemi
+    if (isset($_GET['edit'])) {
+        $editId = $_GET['edit'];
+        $stmt = $pdo->prepare("SELECT * FROM post WHERE id = :id");
+        $stmt->execute([':id' => $editId]);
+        $editData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Formu düzenleme için doldur
+        $name1 = $editData['created_by'];
+        $comment = $editData['comment'];
+        $id = $editData['id'];
+    }
+
 } catch (PDOException $e) {
-    echo "Bağlantı hatası: " . $e->getMessage();
+    // Hata mesajını ekrana yazdır
+    echo "Error: " . $e->getMessage();
 }
 ?>
 
-
-
-<!-- Kullanıcıdan ilan başlığı ve açıklaması alıyoruz -->
+<!-- Form kısmı -->
 <form method="post">
-    Başlık: <input type="text" name="baslik"><br><br>
-    Açıklama: <textarea name="aciklama" rows="4" cols="40"></textarea><br><br>
-    <button type="submit">İlanı Gönder</button>
+    Name: <input type="text" name="name" value="<?php echo isset($name1) ? $name1 : ''; ?>"><br><br>
+    Comment: <textarea name="comment" rows="4" cols="40"><?php echo isset($comment) ? $comment : ''; ?></textarea><br><br>
+    <button type="submit">Send comment</button>
+    <?php if (isset($id)): ?>
+        <input type="hidden" name="id" value="<?php echo $id; ?>">
+    <?php endif; ?>
 </form>
-
-<?php
-// Eğer form gönderildiyse
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    // Inputları boş mu diye kontrol ediyoruz
-    if (empty($_POST["baslik"]) || empty($_POST["aciklama"])) {
-        echo "Lütfen tüm alanları doldurun!";
-    } else {
-        // Gelen verileri XSS saldırılarına karşı temizliyoruz
-        $baslik = htmlspecialchars($_POST["baslik"]);
-        $aciklama = htmlspecialchars($_POST["aciklama"]);
-
-        // Şu an sadece verileri ekrana yazdırıyoruz
-        echo "<h2>Gönderdiğiniz İlan:</h2>";
-        echo "<strong>Başlık:</strong> " . $baslik . "<br>";
-        echo "<strong>Açıklama:</strong> " . nl2br($aciklama); // \n karakterini <br> yapar
-    }
-}
-?>
