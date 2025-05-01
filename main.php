@@ -1,6 +1,6 @@
 <?php
 // Veritabanı bağlantısı
-$host = '172.17.0.3';     // PostgreSQL konteynerinin IP adresi
+$host = '172.17.0.2';     // PostgreSQL konteynerinin IP adresi
 $db   = 'postgres';        // Veritabanı adı
 $user = 'postgres';        // Kullanıcı adı
 $pass = 'postgres';        // Şifre
@@ -13,7 +13,7 @@ try {
     // PDO ile veritabanına bağlan
     $pdo = new PDO($dsn, $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
+
     // Eğer formdan veri gönderildiyse (POST metodu ile)
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!empty($_POST["name"]) && !empty($_POST["comment"])) {
@@ -45,20 +45,22 @@ try {
         }
     }
 
-    // Silme işlemi
+    // Soft delete işlemi
     if (isset($_GET['delete'])) {
         $deleteId = $_GET['delete'];
-        $stmt = $pdo->prepare("DELETE FROM post WHERE id = :id");
+        $stmt = $pdo->prepare("UPDATE post SET deleted_at = TO_TIMESTAMP(TO_CHAR(NOW(), 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') WHERE id = :id");
         $stmt->execute([':id' => $deleteId]);
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     }
 
     // Veritabanındaki tüm verileri çek
-    $stmt = $pdo->query("SELECT * FROM post ORDER BY id DESC");
+    $stmt = $pdo->query("SELECT * FROM post WHERE deleted_at IS NULL ORDER BY id DESC");
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
     // Veritabanındaki tüm verileri ekranda listele
+    echo "You can add , edit and delete  <br>";
     echo "<h2>Comments</h2>";
     foreach ($users as $user) {
         echo "<strong>ID:</strong> {$user['id']}<br>";
@@ -73,13 +75,14 @@ try {
         $stmt = $pdo->prepare("SELECT * FROM post WHERE id = :id");
         $stmt->execute([':id' => $editId]);
         $editData = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $pdo->prepare("UPDATE post SET updated_at = TO_TIMESTAMP(TO_CHAR(NOW(), 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') WHERE id = :id");
+
 
         // Formu düzenleme için doldur
         $name1 = $editData['created_by'];
         $comment = $editData['comment'];
         $id = $editData['id'];
     }
-
 } catch (PDOException $e) {
     // Hata mesajını ekrana yazdır
     echo "Error: " . $e->getMessage();
