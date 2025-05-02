@@ -1,9 +1,9 @@
 <?php
 // Veritabanı bağlantısı
-$host = '172.17.0.2';     // PostgreSQL konteynerinin IP adresi
-$db   = 'postgres';        // Veritabanı adı
-$user = 'postgres';        // Kullanıcı adı
-$pass = 'postgres';        // Şifre
+$host = 'training2025-db-instance-1.c25mkwu8gg8k.us-east-1.rds.amazonaws.com';     // PostgreSQL konteynerinin IP adresi
+$db   = 'salesdb';        // Veritabanı adı
+$user = 'karpuz';        // Kullanıcı adı
+$pass = 'training2025-karpuz';        // Şifre
 $charset = 'utf8';         // Karakter seti
 
 // PDO bağlantı cümlesi
