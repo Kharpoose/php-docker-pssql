@@ -1,12 +1,13 @@
 <?php
 session_start();
 
-// Kullanıcı giriş yapmış mı kontrol et
 if (!isset($_SESSION['user'])) {
-    header("Location: login-with-session.php");
+    header("Location: login-with-session.php"); // Giriş yapılmadıysa login sayfasına dön
     exit();
 }
 ?>
 
-<h2>Welcome, <?php echo $_SESSION['user']; ?>!</h2>
-<a href="logout.php">Logout</a>
+<h2>Hoş geldin, <?php echo $_SESSION['user']; ?>!</h2>
+<p>Burada kullanıcıya özel içerik gösterebilirsin.</p>
+
+<a href="logout.php">Çıkış Yap</a>
