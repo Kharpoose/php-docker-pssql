@@ -29,9 +29,10 @@ try {
         } else {
             $error = "Kullanıcı adı veya şifre yanlış.";
         }
+        
     }
 } catch (PDOException $e) {
-    echo "Veritabanı hatası: " . $e->getMessage();
+    echo "Veritabanı hatasi: " . $e->getMessage();
 }
 ?>
 
