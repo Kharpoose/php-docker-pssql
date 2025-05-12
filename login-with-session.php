@@ -32,7 +32,7 @@ try {
         
     }
 } catch (PDOException $e) {
-    echo "Veritabanı hatasi: " . $e->getMessage();
+    echo "Veritabanı hatasi: " . $e->getMessage();  
 }
 ?>
 
