@@ -39,7 +39,7 @@ try {
 <h2>Login</h2>
 <?php if (!empty($error)) echo "<p style='color:red'>$error</p>"; ?>
 <form method="post">
-    Kullanıcı Adı: <input type="text" name="username" required><br><br>
+    Name: <input type="text" name="username" required><br><br>
     Şifre: <input type="password" name="password" required><br><br>
     <button type="submit">Giriş Yap</button>
 </form>
