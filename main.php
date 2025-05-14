@@ -10,7 +10,7 @@ $charset = 'utf8';         // Karakter seti
 $dsn = "pgsql:host=$host;dbname=$db";
 
 try {
-    // PDO ile veritabanına bağlan
+    // PDO ile veritabanına bağlandik
     $pdo = new PDO($dsn, $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
