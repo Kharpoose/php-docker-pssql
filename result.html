@@ -1,0 +1,33 @@
+<!-- result.html: バトル結果表示画面 -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>バトル結果</title>
+    <link rel="stylesheet" href="result.css">
+</head>
+<body>
+    <div class="container">
+        <h2>バトル結果</h2>
+        <div class="result-message" id="resultMessage">ここに勝敗メッセージが入ります</div>
+
+        <div class="pokemon-result">
+            <div>
+                <h3>あなたのポケモン</h3>
+                <img src="player.png" alt="Player Pokémon" class="pokemon-sprite">
+                <div class="hp-bar"><div class="hp" id="playerHpBar"></div></div>
+                <div id="playerHpText">HP: 0 / 100</div>
+            </div>
+            <div>
+                <h3>相手のポケモン</h3>
+                <img src="opponent.png" alt="Opponent Pokémon" class="pokemon-sprite">
+                <div class="hp-bar"><div class="hp" id="opponentHpBar"></div></div>
+                <div id="opponentHpText">HP: 0 / 100</div>
+            </div>
+        </div>
+
+        <button class="button" onclick="location.href='index.html'">タイトルへ戻る</button>
+        <button class="button" onclick="location.href='select.html'">もう一度プレイ</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+/* result.css: 結果画面のスタイル */
+
+/* 背景色と全体のフォント設定 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* 画面全体の高さ */
+    background-color: #f0f8ff; /* 統一背景色 */
+}
+
+/* 結果表示用の中央コンテナ */
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+/* 結果メッセージ */
+h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* ボタン */
+.button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+}

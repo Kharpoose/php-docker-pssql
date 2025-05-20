@@ -1,0 +1,31 @@
+<!-- battle.html: バトル画面 -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>バトル開始</title>
+    <link rel="stylesheet" href="battle.css">
+</head>
+<body>
+    <div class="container">
+        <h2>バトル開始</h2>
+        <div class="battle-field">
+            <div>
+                <div>自分のポケモン</div>
+                <img src="player.png" alt="Player" class="pokemon-sprite">
+                <div class="hp-bar"><div class="hp" id="playerHp">HP</div></div>
+            </div>
+            <div>
+                <div>相手のポケモン</div>
+                <img src="opponent.png" alt="Opponent" class="pokemon-sprite">
+                <div class="hp-bar"><div class="hp" id="opponentHp">HP</div></div>
+            </div>
+        </div>
+        <div>
+            <button class="button" onclick="attack(1)">攻撃1</button>
+            <button class="button" onclick="attack(2)">攻撃2</button>
+            <button class="button" onclick="wait()">待機</button>
+        </div>
+    </div>
+</body>
+</html>
