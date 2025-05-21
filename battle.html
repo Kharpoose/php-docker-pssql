@@ -1,31 +1,179 @@
-<!-- battle.html: バトル画面 -->
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="tr">
+
 <head>
-    <meta charset="UTF-8">
-    <title>バトル開始</title>
-    <link rel="stylesheet" href="battle.css">
+    <meta charset="UTF-8" />
+    <title>Savaş Ekranı</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .battle-container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 700px;
+        }
+
+        .panel {
+            width: 45%;
+            border: 1px solid #ccc;
+            padding: 15px;
+        }
+
+        button {
+            margin: 5px;
+        }
+    </style>
 </head>
+
 <body>
-    <div class="container">
-        <h2>バトル開始</h2>
-        <div class="battle-field">
-            <div>
-                <div>自分のポケモン</div>
-                <img src="player.png" alt="Player" class="pokemon-sprite">
-                <div class="hp-bar"><div class="hp" id="playerHp">HP</div></div>
-            </div>
-            <div>
-                <div>相手のポケモン</div>
-                <img src="opponent.png" alt="Opponent" class="pokemon-sprite">
-                <div class="hp-bar"><div class="hp" id="opponentHp">HP</div></div>
-            </div>
+    <h2>Battle Başladı!</h2>
+    <div class="battle-container">
+        <div class="panel" id="playerPanel">
+            <h3>Senin Pokémon'un</h3>
+            <p><strong>Adı:</strong> <span id="p_name"></span></p>
+            <p><strong>Türü:</strong> <span id="p_type"></span></p>
+            <p><strong>HP:</strong> <span id="p_hp"></span></p>
+            <p><strong>Enerji:</strong> <span id="p_energy"></span></p>
+            <button id="attack1"></button>
+            <button id="attack2"></button>
+            <button id="pass">Pass</button>
         </div>
-        <div>
-            <button class="button" onclick="attack(1)">攻撃1</button>
-            <button class="button" onclick="attack(2)">攻撃2</button>
-            <button class="button" onclick="wait()">待機</button>
+
+        <div class="panel" id="botPanel">
+            <h3>Rakip Pokémon</h3>
+            <p><strong>Adı:</strong> <span id="b_name"></span></p>
+            <p><strong>Türü:</strong> <span id="b_type"></span></p>
+            <p><strong>HP:</strong> <span id="b_hp"></span></p>
         </div>
     </div>
+<script>
+  const player = JSON.parse(sessionStorage.getItem('selectedPokemon'));
+  player.energy = 3;
+
+  let bot = null;
+
+  function renderPlayer() {
+    document.getElementById('p_name').textContent = player.name;
+    document.getElementById('p_type').textContent = player.type;
+    document.getElementById('p_hp').textContent = player.hp;
+    document.getElementById('p_energy').textContent = player.energy;
+
+    document.getElementById('attack1').textContent = `${player.attack_1_name} (${player.attack_1_damage} dmg / ${player.attack_1_energy} enerji)`;
+    document.getElementById('attack2').textContent = `${player.attack_2_name} (${player.attack_2_damage} dmg / ${player.attack_2_energy} enerji)`;
+  }
+
+  function renderBot() {
+    document.getElementById('b_name').textContent = bot.name;
+    document.getElementById('b_type').textContent = bot.type;
+    document.getElementById('b_hp').textContent = bot.hp;
+  }
+
+  function updateStats() {
+    document.getElementById('p_hp').textContent = player.hp;
+    document.getElementById('p_energy').textContent = player.energy;
+    document.getElementById('b_hp').textContent = bot.hp;
+  }
+
+  function checkEndGame() {
+    if (bot.hp <= 0) {
+      alert("Kazandın! 🎉");
+      disableButtons();
+    } else if (player.hp <= 0) {
+      alert("Kaybettin! 😢");
+      disableButtons();
+    }
+  }
+
+  function disableButtons() {
+    document.getElementById('attack1').disabled = true;
+    document.getElementById('attack2').disabled = true;
+    document.getElementById('pass').disabled = true;
+  }
+
+  function botTurn() {
+    bot.energy += 1; // Her tur sonunda enerji artışı
+
+    const attacks = [
+      {
+        name: bot.attack_1_name,
+        damage: parseInt(bot.attack_1_damage),
+        energy: parseInt(bot.attack_1_energy),
+      },
+      {
+        name: bot.attack_2_name,
+        damage: parseInt(bot.attack_2_damage),
+        energy: parseInt(bot.attack_2_energy),
+      }
+    ];
+
+    const possibleAttacks = attacks.filter(a => bot.energy >= a.energy);
+
+    if (possibleAttacks.length > 0) {
+      const attack = possibleAttacks[Math.floor(Math.random() * possibleAttacks.length)];
+      alert(`Rakip ${bot.name}, ${attack.name} ile saldırdı!`);
+      bot.energy -= attack.energy;
+      player.hp -= attack.damage;
+    } else {
+      alert(`Rakip ${bot.name} pas geçti. +2 enerji aldı.`);
+      bot.energy += 2;
+    }
+
+    renderPlayer();
+    renderBot();
+    checkEndGame();
+  }
+
+  fetch('get_pokemon.php?name=ファイヤー')
+    .then(res => res.json())
+    .then(data => {
+      bot = data[0];
+      bot.energy = 3;
+      renderPlayer();
+      renderBot();
+    })
+    .catch(err => {
+      alert('Bot Pokémon yüklenemedi.');
+      console.error(err);
+    });
+
+  document.getElementById('attack1').onclick = function () {
+    if (player.energy >= player.attack_1_energy) {
+      alert(`${player.attack_1_name} ile saldırdın!`);
+      player.energy -= parseInt(player.attack_1_energy);
+      bot.hp -= parseInt(player.attack_1_damage);
+      player.energy += 1;
+      updateStats();
+      checkEndGame();
+      if (bot.hp > 0) botTurn();
+    } else {
+      alert("Yeterli enerji yok!");
+    }
+  };
+
+  document.getElementById('attack2').onclick = function () {
+    if (player.energy >= player.attack_2_energy) {
+      alert(`${player.attack_2_name} ile saldırdın!`);
+      player.energy -= parseInt(player.attack_2_energy);
+      bot.hp -= parseInt(player.attack_2_damage);
+      player.energy += 1;
+      updateStats();
+      checkEndGame();
+      if (bot.hp > 0) botTurn();
+    } else {
+      alert("Yeterli enerji yok!");
+    }
+  };
+
+  document.getElementById('pass').onclick = function () {
+    alert("Pass yaptın, +2 enerji kazandın.");
+    player.energy += 2;
+    updateStats();
+    botTurn();
+  };
+</script>
+
 </body>
+
 </html>

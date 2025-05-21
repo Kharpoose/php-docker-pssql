@@ -1,61 +1,185 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>ポケモンバトル - ポケモン選択</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="index.css" />
+    <style>
+        .selected {
+            border: 3px solid red;
+            border-radius: 10px;
+        }
+
+        .start-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            width: 200px;
+        }
+    </style>
 </head>
+
 <body>
     <div class="container">
-        <!-- タイトル -->
         <h2 class="title">たたかう　ポケモンを　えらぼう！</h2>
 
-        <!-- ポケモン一覧 -->
         <div class="pokemon-grid">
             <!-- 🔥 ほのお -->
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" alt="リザードン"><p class="name">リザードン</p></div>
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png" alt="バシャーモ"><p class="name">バシャーモ</p></div>
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/59.png" alt="ウインディ"><p class="name">ウインディ</p></div>
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/146.png" alt="ファイヤー"><p class="name">ファイヤー</p></div>
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/815.png" alt="エースバーン"><p class="name">エースバーン</p></div>
+            <div class="pokemon" id="リザードン"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png"
+                    alt="リザードン">
+                <p class="name">リザードン</p>
+            </div>
+            <div class="pokemon" id="バシャーモ"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png"
+                    alt="バシャーモ">
+                <p class="name">バシャーモ</p>
+            </div>
+            <div class="pokemon" id="ウインディ"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/59.png"
+                    alt="ウインディ">
+                <p class="name">ウインディ</p>
+            </div>
+            <div class="pokemon" id="ファイヤー"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/146.png"
+                    alt="ファイヤー">
+                <p class="name">ファイヤー</p>
+            </div>
+            <div class="pokemon" id="エースバーン"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/815.png"
+                    alt="エースバーン">
+                <p class="name">エースバーン</p>
+            </div>
 
             <!-- 💧 みず -->
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png" alt="カメックス"><p class="name">カメックス</p></div>
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/134.png" alt="シャワーズ"><p class="name">シャワーズ</p></div>
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/260.png" alt="ラグラージ"><p class="name">ラグラージ</p></div>
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/658.png" alt="ゲッコウガ"><p class="name">ゲッコウガ</p></div>
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/350.png" alt="ミロカロス"><p class="name">ミロカロス</p></div>
+            <div class="pokemon" id="カメックス"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png"
+                    alt="カメックス">
+                <p class="name">カメックス</p>
+            </div>
+            <div class="pokemon" id="シャワーズ"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/134.png"
+                    alt="シャワーズ">
+                <p class="name">シャワーズ</p>
+            </div>
+            <div class="pokemon" id="ラグラージ"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/260.png"
+                    alt="ラグラージ">
+                <p class="name">ラグラージ</p>
+            </div>
+            <div class="pokemon" id="ゲッコウガ"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/658.png"
+                    alt="ゲッコウガ">
+                <p class="name">ゲッコウガ</p>
+            </div>
+            <div class="pokemon" id="ミロカロス"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/350.png"
+                    alt="ミロカロス">
+                <p class="name">ミロカロス</p>
+            </div>
 
             <!-- 🌿 くさ -->
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png" alt="フシギバナ"><p class="name">フシギバナ</p></div>
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/254.png" alt="ジュカイン"><p class="name">ジュカイン</p></div>
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/103.png" alt="ナッシー"><p class="name">ナッシー</p></div>
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/407.png" alt="ロズレイド"><p class="name">ロズレイド</p></div>
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/812.png" alt="ゴリランダー"><p class="name">ゴリランダー</p></div>
+            <div class="pokemon" id="フシギバナ"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png"
+                    alt="フシギバナ">
+                <p class="name">フシギバナ</p>
+            </div>
+            <div class="pokemon" id="ジュカイン"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/254.png"
+                    alt="ジュカイン">
+                <p class="name">ジュカイン</p>
+            </div>
+            <div class="pokemon" id="ナッシー"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/103.png"
+                    alt="ナッシー">
+                <p class="name">ナッシー</p>
+            </div>
+            <div class="pokemon" id="ロズレイド"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/407.png"
+                    alt="ロズレイド">
+                <p class="name">ロズレイド</p>
+            </div>
+            <div class="pokemon" id="ゴリランダー"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/812.png"
+                    alt="ゴリランダー">
+                <p class="name">ゴリランダー</p>
+            </div>
 
             <!-- ⚡ でんき -->
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="ピカチュウ"><p class="name">ピカチュウ</p></div>
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/26.png" alt="ライチュウ"><p class="name">ライチュウ</p></div>
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/135.png" alt="サンダース"><p class="name">サンダース</p></div>
-            <div class="pokemon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/466.png" alt="エレキブル"><p class="name">エレキブル</p></div>
-            <div class="pokemon"><img src="https://img.pokemondb.net/artwork/large/ampharos.jpg" alt="デンリュウ"><p class="name">デンリュウ</p></div>
+            <div class="pokemon" id="ピカチュウ"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"
+                    alt="ピカチュウ">
+                <p class="name">ピカチュウ</p>
+            </div>
+            <div class="pokemon" id="ライチュウ"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/26.png"
+                    alt="ライチュウ">
+                <p class="name">ライチュウ</p>
+            </div>
+            <div class="pokemon" id="サンダース"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/135.png"
+                    alt="サンダース">
+                <p class="name">サンダース</p>
+            </div>
+            <div class="pokemon" id="エレキブル"><img
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/466.png"
+                    alt="エレキブル">
+                <p class="name">エレキブル</p>
+            </div>
+            <div class="pokemon" id="デンリュウ"><img src="https://img.pokemondb.net/artwork/large/ampharos.jpg" alt="デンリュウ">
+                <p class="name">デンリュウ</p>
+            </div>
+
+            <!-- Diğer Pokémon'lar buraya eklenebilir -->
         </div>
 
-                    <!-- ゲーム開始ボタン -->
-                    <a href="battle.html" class="start-button">ゲーム開始</a>
-                </div>
+        <a href="#" class="start-button" id="startBtn">ゲーム開始</a>
+    </div>
 
-                <script>
-                    document.querySelectorAll('.pokemon').forEach(pokemonCard => {
-                      pokemonCard.addEventListener('click', () => {
-                        // いったん全カードのselectedを外す（単一選択にしたい場合）
-                        document.querySelectorAll('.pokemon').forEach(card => card.classList.remove('selected'));
-                        // クリックしたカードにselectedを付ける
-                        pokemonCard.classList.add('selected');
-                      });
-                    });
-                  </script>
+    <script>
+        let selectedName = null;
 
+        document.querySelectorAll('.pokemon').forEach(pokemonCard => {
+            pokemonCard.addEventListener('click', () => {
+                document.querySelectorAll('.pokemon').forEach(card => card.classList.remove('selected'));
+                pokemonCard.classList.add('selected');
 
-            </body>
-            </html>
+                // İsmi Japonca olarak al
+                selectedName = pokemonCard.querySelector('.name').textContent.trim();
+            });
+        });
+
+        document.getElementById('startBtn').addEventListener('click', () => {
+            if (!selectedName) {
+                alert("ポケモンをえらんでください！");
+                return;
+            }
+
+            fetch(`get_pokemon.php?name=${encodeURIComponent(selectedName)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length === 0) {
+                        alert("ポケモンがみつかりませんでした。");
+                        return;
+                    }
+
+                    const p = data[0];
+                    sessionStorage.setItem('selectedPokemon', JSON.stringify(p));
+                    window.location.href = 'battle.html';
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("エラーがはっせいしました。");
+                });
+        });
+    </script>
+</body>
+
+</html>
