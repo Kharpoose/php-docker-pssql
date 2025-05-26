@@ -1,35 +1,17 @@
 <!DOCTYPE html>
 <html lang="ja">
-
+ 
 <head>
     <meta charset="UTF-8" />
     <title>ポケモンバトル - ポケモン選択</title>
     <link rel="stylesheet" href="index.css" />
-    <style>
-        .selected {
-            border: 3px solid red;
-            border-radius: 10px;
-        }
 
-        .start-button {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            font-size: 18px;
-            background-color: #4CAF50;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 8px;
-            width: 200px;
-        }
-    </style>
 </head>
-
+ 
 <body>
     <div class="container">
         <h2 class="title">たたかう　ポケモンを　えらぼう！</h2>
-
+ 
         <div class="pokemon-grid">
             <!-- 🔥 ほのお -->
             <div class="pokemon" id="リザードン"><img
@@ -57,7 +39,7 @@
                     alt="エースバーン">
                 <p class="name">エースバーン</p>
             </div>
-
+ 
             <!-- 💧 みず -->
             <div class="pokemon" id="カメックス"><img
                     src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png"
@@ -84,7 +66,7 @@
                     alt="ミロカロス">
                 <p class="name">ミロカロス</p>
             </div>
-
+ 
             <!-- 🌿 くさ -->
             <div class="pokemon" id="フシギバナ"><img
                     src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png"
@@ -111,7 +93,7 @@
                     alt="ゴリランダー">
                 <p class="name">ゴリランダー</p>
             </div>
-
+ 
             <!-- ⚡ でんき -->
             <div class="pokemon" id="ピカチュウ"><img
                     src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"
@@ -136,32 +118,32 @@
             <div class="pokemon" id="デンリュウ"><img src="https://img.pokemondb.net/artwork/large/ampharos.jpg" alt="デンリュウ">
                 <p class="name">デンリュウ</p>
             </div>
-
+ 
             <!-- Diğer Pokémon'lar buraya eklenebilir -->
         </div>
-
+ 
         <a href="#" class="start-button" id="startBtn">ゲーム開始</a>
     </div>
-
+ 
     <script>
         let selectedName = null;
-
+ 
         document.querySelectorAll('.pokemon').forEach(pokemonCard => {
             pokemonCard.addEventListener('click', () => {
                 document.querySelectorAll('.pokemon').forEach(card => card.classList.remove('selected'));
                 pokemonCard.classList.add('selected');
-
+ 
                 // İsmi Japonca olarak al
                 selectedName = pokemonCard.querySelector('.name').textContent.trim();
             });
         });
-
+ 
         document.getElementById('startBtn').addEventListener('click', () => {
             if (!selectedName) {
                 alert("ポケモンをえらんでください！");
                 return;
             }
-
+ 
             fetch(`get_pokemon.php?name=${encodeURIComponent(selectedName)}`)
                 .then(response => response.json())
                 .then(data => {
@@ -169,17 +151,24 @@
                         alert("ポケモンがみつかりませんでした。");
                         return;
                     }
-
+ 
                     const p = data[0];
+
+                    //画像URLをHTMLから取得して追加
+                    const selectedCard = document.querySelector('.pokemon.selected img');
+                    if (selectedCard) {
+                        p.image_url = selectedCard.src;  // ここで画像URLを追加
+                    }
                     sessionStorage.setItem('selectedPokemon', JSON.stringify(p));
                     window.location.href = 'battle.html';
                 })
                 .catch(err => {
                     console.error(err);
-                    alert("エラーがはっせいしました。");
+                    alert("エラーが発生しました。");
                 });
         });
     </script>
 </body>
-
+ 
 </html>
+ 

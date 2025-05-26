@@ -93,3 +93,21 @@ body {
     border: 3px solid #FF9900; /* オレンジの枠線 */
     background-color: #FFF3E0; /* 薄いオレンジ背景 */
 }
+
+.selected {
+    border: 3px solid red;
+    border-radius: 10px;
+}
+
+.start-button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    width: 200px;
+}
